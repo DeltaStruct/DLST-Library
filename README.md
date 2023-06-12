@@ -3,7 +3,6 @@ DeltaStructの競プロ用C++ライブラリ
 
 [![Support C++ Version](https://img.shields.io/badge/Support%20C%2B%2B%20Version-17-blue)](https://cpprefjp.github.io/lang/cpp17.html) 
 [![Support C++ Version](https://img.shields.io/badge/Support%20C%2B%2B%20Version-20-blue)](https://cpprefjp.github.io/lang/cpp20.html)
-
 [![Unsupport C++ Version](https://img.shields.io/badge/Unsupport%20Support%20C%2B%2B%20Version-~14-blue)](https://cpprefjp.github.io) 
 [![Unsupport C++ Version](https://img.shields.io/badge/Unsupport%20Support%20C%2B%2B%20Version-23-blue)](https://cpprefjp.github.io/lang/cpp23.html)
 
