@@ -13,8 +13,8 @@ DeltaStructの競プロ用C++ライブラリ
 [![Library Size](https://img.shields.io/github/repo-size/DeltaStruct/DLTS-Library?label=Library%20Size)](https://github.com/DeltaStruct/DLTS-Library/blob/main/)
 [![DeltaStruct](https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2FDeltaStruct)](https://atcoder.jp/users/DeltaStruct)  
 ### ファイル
-#### Library
-#### BETA
+#### [Library](https://github.com/DeltaStruct/DLTS-Library/blob/main/Library)
+#### [BETA](https://github.com/DeltaStruct/DLTS-Library/blob/main/BETA)
 ベータ版のファイルを置いておく場所  
 動かないやつが大半だと思います
 ##### [README.md](https://github.com/DeltaStruct/DLTS-Library/blob/main/BETA/README.md)
