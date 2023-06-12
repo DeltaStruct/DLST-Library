@@ -22,5 +22,5 @@ Copyright (c) 2023 DeltaStruct
 Released under the MIT license  
 [https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE](https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE)
 
-みたいな文章が全ソースコードに記載されているので特に気にすることはありません。  
-削除しないでください。MIT Licenseでこのソースコードは配布されています。
+↑みたいな文章が全ソースコードに記載されているので特に気にすることはありません。  
+この文章は削除しないでください。MIT Licenseでこのソースコードは配布されています。
