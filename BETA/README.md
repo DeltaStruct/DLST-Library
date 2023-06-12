@@ -1,7 +1,6 @@
 ## DLTS-Library BETA
-LV.0 アップデート予定
-
-LV.1 Library Checker通過(存在しない場合はAtCoder通過)
+### LV.0 アップデート予定
+### LV.1 Library Checker通過(存在しない場合はAtCoder通過)
 
 LV.2 Library Checker非通過(LV.1にUpdateできないもの バグあり)
 
