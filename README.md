@@ -17,7 +17,7 @@ DeltaStructの競プロ用C++ライブラリ
 #### BETA
 ベータ版のファイルを置いておく場所  
 動かないやつが大半だと思います
-##### README
+##### [README.md](https://github.com/DeltaStruct/DLTS-Library/blob/main/BETA/README.md)
 #### LICENSE
 Copyright (c) 2023 DeltaStruct  
 Released under the MIT license  
