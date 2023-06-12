@@ -17,4 +17,7 @@ DeltaStructの競プロ用C++ライブラリ
 #### BETA
 ベータ版のファイルを置いておく場所  
 動かないやつが大半だと思います
-####
+#### LICENSE
+Copyright (c) 2013 Yukinobu Kurata
+Released under the MIT license
+[https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE](https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE)
