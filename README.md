@@ -30,9 +30,12 @@ Released under the MIT license
 ↑みたいな文章が全ソースコードに記載されているので特に気にすることはありません。  
 この文章は削除しないでください。MIT Licenseでこのソースコードは配布されています。
 
-
-
-
+### ライブラリ
+#### Shuffle
+C++:20
+配列を並び替えるための関数
+void shuffle<T>(T) noexcept
+T shuffle_copy<T>(T) noexcept
 
 
 
