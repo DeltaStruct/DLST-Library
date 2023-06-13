@@ -18,6 +18,10 @@ DeltaStructの競プロ用C++ライブラリ
 ベータ版のファイルを置いておく場所  
 動かないやつが大半だと思います
 ##### [-ファイル:README.md](https://github.com/DeltaStruct/DLTS-Library/blob/main/BETA/README.md)
+#### [ディレクトリ:GOMIBAKO](https://github.com/DeltaStruct/DLTS-Library/blob/main/GOMIBAKO)
+バグが発覚したやつとか使い物にならないと知って作ったやつとか
+動かないやつとかあるので使わないのを推奨
+##### [-ファイル:README.md](https://github.com/DeltaStruct/DLTS-Library/blob/main/GOMIBAKO/README.md)
 #### [ファイル:LICENSE](https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE)
 Copyright (c) 2023 DeltaStruct  
 Released under the MIT license  
