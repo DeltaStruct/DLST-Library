@@ -1,4 +1,4 @@
-## DLTS-Library
+## DLST-Library
 DeltaStructの競プロ用C++ライブラリ
 
 [![Support C++ Version](https://img.shields.io/badge/Support%20C%2B%2B%20Version-17-blue)](https://cpprefjp.github.io/lang/cpp17.html) 
