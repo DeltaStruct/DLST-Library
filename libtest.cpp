@@ -10,5 +10,6 @@ exit
 int main(){
     std::cout << tarai(15, 6, 0) << std::endl;
     std::cout << tarai_fast(15, 6, 0) << std::endl;
+    
     return 0;
 }
