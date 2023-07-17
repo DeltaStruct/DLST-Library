@@ -1,18 +1,14 @@
 #if false
 g++ -std=gnu++20 -Wall -Wextra libtest.cpp -o libtest
-echo
 ./libtest
 rm libtest
 exit
 #endif
 #include <iostream>
-#include "DLTS/fastio.hpp"
+#include "DLTS/tarai.hpp"
 
 int main(){
-    char x;
-    fastio >> x;
-    std::cout << x << std::endl;
-    fastio >> x;
-    std::cout << x << std::endl;
+    std::cout << tarai(15, 6, 0) << std::endl;
+    std::cout << tarai_fast(15, 6, 0) << std::endl;
     return 0;
 }
