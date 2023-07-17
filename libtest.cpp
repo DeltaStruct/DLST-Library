@@ -1,13 +1,18 @@
 #if false
 g++ -std=gnu++20 -Wall -Wextra libtest.cpp -o libtest
+echo
 ./libtest
 rm libtest
 exit
 #endif
 #include <iostream>
-#include "DLTS/lsb.hpp"
+#include "DLTS/fastio.hpp"
 
 int main(){
-    std::cout << lsb(10) << std::endl;
+    char x;
+    fastio >> x;
+    std::cout << x << std::endl;
+    fastio >> x;
+    std::cout << x << std::endl;
     return 0;
 }
