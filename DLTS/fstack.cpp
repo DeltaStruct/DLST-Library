@@ -2,13 +2,13 @@
 // Released under the MIT license  
 // https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE
 
-// メモリリークは安全です！(メモリリークします。嫌なら使わないでください。)
-#include <concepts>
+// メモリリークします。嫌なら使わないでください。
 #include <cassert>
 #include <vector>
 #include <map>
 #include <unordered_map>
 #include <iostream>
+#include <string>
 
 struct fstack_mvec {};
 struct fstack_mmap {};
@@ -38,6 +38,8 @@ class fstack_t {
     fstack_id rollback() noexcept { std::swap(ptr, pid); return ptr; }
     fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = f; return ptr; }
     fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f; return ptr; }
+    fstack_id getid() noexcept { return ptr; }
+    fstack_pt* getptr() noexcept { return ptr; }
 };
 
 template<typename T>
@@ -75,6 +77,9 @@ class fstack_t<T, fstack_mvec> {
     fstack_id rollback() noexcept { std::swap(ptr, pid),_v.emplace_back(ptr); return _v.size()-1; }
     fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = _v[f],_v.emplace_back(ptr); return _v.size()-1; }
     fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = _v[f],_v.emplace_back(ptr); return _v.size()-1; }
+    fstack_id get_id() noexcept { return _v.size()-1; }
+    fstack_id getid() noexcept { return _v.size()-1; }
+    fstack_pt* getptr() noexcept { return ptr; }
 };
 
 template<typename T>
@@ -114,6 +119,8 @@ class fstack_t<T, fstack_mmap> {
     fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
     fstack_id rollback(const std::size_t& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
     fstack_id rollback(std::size_t&& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id getid() noexcept { return --_v.end(); }
+    fstack_pt* getptr() noexcept { return ptr; }
 };
 
 template<typename T>
@@ -153,6 +160,8 @@ class fstack_t<T, fstack_mhash> {
     fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
     fstack_id rollback(const std::size_t& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
     fstack_id rollback(std::size_t&& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id getid() noexcept { return _v.find(_v.size()-1); }
+    fstack_pt* getptr() noexcept { return ptr; }
 };
 
 template<typename T> using fstack = fstack_t<T, void>;
@@ -162,10 +171,21 @@ template<typename T> using fstack_map = fstack_t<T, fstack_mmap>;
 template<typename T> using fstack_unordered = fstack_t<T, fstack_mhash>;
 template<typename T> using fstack_hash = fstack_t<T, fstack_mhash>;
 
+// verify: https://atcoder.jp/contests/abc273/tasks/abc273_e
+// Submittion: https://atcoder.jp/contests/abc273/submissions/44684644
+
 int main(){
-    fstack_hash<std::pair<int, std::string>> S; std::pair<int, std::string> p(1, "Hello");
-    auto id = S.push(p);
-    //S.pop();
-    S.emplace(1, "Hello,fstack!"); S.rollback();
-    std::cout << S.top().first << S.top().second << std::endl;
+    using namespace std;
+    fstack<int> S; unordered_map<int, typename decltype(S)::fstack_id> M;
+    int Q; cin >> Q; string s; int x;
+    for (int i(0);i < Q;++i){
+        cin >> s;
+        if (s[0]!='D') cin >> x;
+        if (s[0]=='A') S.emplace(x);
+        if (s[0]=='D') if (!S.empty()) S.pop();
+        if (s[0]=='S') M[x] = S.getid();
+        if (s[0]=='L') S.rollback(M[x]);
+        if (S.empty()) cout << -1 << endl;
+        else cout << S.top() << endl;
+    }
 }
