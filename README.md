@@ -32,14 +32,4 @@ Released under the MIT license
 
 ### ライブラリ
 #### fstack
-C++:20
-永続スタック
-class fstack<T>;
-> 永続スタック ポインタでrollback  
-class fstack_vec<T>; class fstack_vector<T>;  
-> vectorで保存  
-class fstack_map<T>;  
-> mapで保存  
-class fstack_hash<T>; class fstack_unordered<T>;  
-> unordered_mapで保存  
 
