@@ -23,7 +23,7 @@ DeltaStructの競プロ用C++ライブラリ
 動かないやつとかあるので使わないのを推奨
 ##### [-ファイル:README.md](https://github.com/DeltaStruct/DLTS-Library/blob/main/GOMIBAKO/README.md)
 #### [ファイル:LICENSE](https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE)
-Copyright (c) 2023 DeltaStruct  
+Copyright (c) 2023 DeltaStruct All Rights Reserved. 
 Released under the MIT license  
 [https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE](https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE)
 
@@ -31,11 +31,11 @@ Released under the MIT license
 この文章は削除しないでください。MIT Licenseでこのソースコードは配布されています。
 
 ### ライブラリ
-#### Shuffle
+#### fstack
 C++:20
-配列を並び替えるための関数
-void shuffle<T>(T) noexcept
-T shuffle_copy<T>(T) noexcept
+永続スタック
+class fstack<T>;
+
 
 
 

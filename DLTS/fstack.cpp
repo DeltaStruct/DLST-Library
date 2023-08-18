@@ -1,0 +1,171 @@
+// Copyright (c) 2023-2023 DeltaStruct All Rights Reserved.
+// Released under the MIT license  
+// https://github.com/DeltaStruct/DLTS-Library/blob/main/LICENSE
+
+// メモリリークは安全です！(メモリリークします。嫌なら使わないでください。)
+#include <concepts>
+#include <cassert>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <iostream>
+
+struct fstack_mvec {};
+struct fstack_mmap {};
+struct fstack_mhash {};
+template<typename T, typename X>
+class fstack_t {
+    private:
+    struct fstack_pt {
+        const T e; fstack_pt* next; const std::size_t sz;
+        fstack_pt(T&& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+        fstack_pt(const T& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+    };
+    fstack_pt *ptr, *pid;
+    public:
+    using fstack_id = fstack_pt*;
+    fstack_t() noexcept : ptr(nullptr), pid(nullptr) {}
+    std::size_t size() noexcept { return (ptr==nullptr?0:ptr->sz); }
+    fstack_id pop() noexcept { assert(ptr!=nullptr),pid = ptr,ptr = ptr->next; return ptr; }
+    const T& top() noexcept { assert(ptr!=nullptr); return ptr->e; }
+    fstack_id top_assign(const T& x) noexcept { pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return ptr; }
+    fstack_id top_assign(T&& x) noexcept { pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return ptr; }
+    bool empty() noexcept { return ptr == nullptr; }
+    fstack_id push(const T& x) noexcept { pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return ptr; }
+    fstack_id push(T&& x) noexcept { pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return ptr; }
+    template<typename... Args>
+    fstack_id emplace(Args&&... args) noexcept { pid = ptr,ptr = new fstack_pt(T(args...), ptr, (ptr==nullptr?0:ptr->sz)+1); return ptr; }
+    fstack_id rollback() noexcept { std::swap(ptr, pid); return ptr; }
+    fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = f; return ptr; }
+    fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f; return ptr; }
+};
+
+template<typename T>
+class fstack_t<T, fstack_mvec> {
+    private:
+    struct fstack_pt {
+        const T e; fstack_pt* next; const std::size_t sz;
+        fstack_pt(T&& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+        fstack_pt(const T& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+    };
+    fstack_pt *ptr, *pid; std::vector<fstack_pt*> _v;
+    public:
+    using fstack_id = std::size_t;
+    fstack_t() noexcept : ptr(nullptr), pid(nullptr),_v() {}
+    std::size_t size() noexcept { return (ptr==nullptr?0:ptr->sz); }
+    fstack_id pop() noexcept { assert(ptr!=nullptr),pid = ptr,ptr = ptr->next,_v.emplace_back(ptr); return _v.size()-1; }
+    const T& top() noexcept { assert(ptr!=nullptr); return ptr->e; }
+    fstack_id top_assign(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz),_v.emplace_back(ptr); return _v.size()-1;
+    }
+    fstack_id top_assign(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz),_v.emplace_back(ptr); return _v.size()-1;
+    }
+    bool empty() noexcept { return ptr == nullptr; }
+    fstack_id push(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1),_v.emplace_back(ptr); return _v.size()-1;
+    }
+    fstack_id push(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1),_v.emplace_back(ptr); return _v.size()-1;
+    }
+    template<typename... Args>
+    fstack_id emplace(Args&&... args) noexcept {
+        pid = ptr,ptr = new fstack_pt(T(args...), ptr, (ptr==nullptr?0:ptr->sz)+1),_v.emplace_back(ptr); return _v.size()-1;
+    }
+    fstack_id rollback() noexcept { std::swap(ptr, pid),_v.emplace_back(ptr); return _v.size()-1; }
+    fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = _v[f],_v.emplace_back(ptr); return _v.size()-1; }
+    fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = _v[f],_v.emplace_back(ptr); return _v.size()-1; }
+};
+
+template<typename T>
+class fstack_t<T, fstack_mmap> {
+    private:
+    struct fstack_pt {
+        const T e; fstack_pt* next; const std::size_t sz;
+        fstack_pt(T&& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+        fstack_pt(const T& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+    };
+    fstack_pt *ptr, *pid; std::map<std::size_t, fstack_pt*> _v;
+    public:
+    using fstack_id = typename decltype(_v)::iterator;
+    fstack_t() noexcept : ptr(nullptr), pid(nullptr),_v() {}
+    std::size_t size() noexcept { return (ptr==nullptr?0:ptr->sz); }
+    fstack_id pop() noexcept { assert(ptr!=nullptr),pid = ptr,ptr = ptr->next; return _v.emplace(_v.size(),ptr).first; }
+    const T& top() noexcept { assert(ptr!=nullptr); return ptr->e; }
+    fstack_id top_assign(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id top_assign(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return _v.emplace(_v.size(),ptr).first;
+    }
+    bool empty() noexcept { return ptr == nullptr; }
+    fstack_id push(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id push(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    template<typename... Args>
+    fstack_id emplace(Args&&... args) noexcept {
+        pid = ptr,ptr = new fstack_pt(T(args...), ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id rollback() noexcept { std::swap(ptr, pid); return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(const std::size_t& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(std::size_t&& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+};
+
+template<typename T>
+class fstack_t<T, fstack_mhash> {
+    private:
+    struct fstack_pt {
+        const T e; fstack_pt* next; const std::size_t sz;
+        fstack_pt(T&& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+        fstack_pt(const T& x, fstack_pt* n, std::size_t&& s) noexcept : e(x),next(n),sz(s) {}
+    };
+    fstack_pt *ptr, *pid; std::unordered_map<std::size_t, fstack_pt*> _v;
+    public:
+    using fstack_id = typename decltype(_v)::iterator;
+    fstack_t() noexcept : ptr(nullptr), pid(nullptr),_v() {}
+    std::size_t size() noexcept { return (ptr==nullptr?0:ptr->sz); }
+    fstack_id pop() noexcept { assert(ptr!=nullptr),pid = ptr,ptr = ptr->next; return _v.emplace(_v.size(),ptr).first; }
+    const T& top() noexcept { assert(ptr!=nullptr); return ptr->e; }
+    fstack_id top_assign(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id top_assign(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr->next, ptr->sz); return _v.emplace(_v.size(),ptr).first;
+    }
+    bool empty() noexcept { return ptr == nullptr; }
+    fstack_id push(const T& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id push(T&& x) noexcept {
+        pid = ptr,ptr = new fstack_pt(x, ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    template<typename... Args>
+    fstack_id emplace(Args&&... args) noexcept {
+        pid = ptr,ptr = new fstack_pt(T(args...), ptr, (ptr==nullptr?0:ptr->sz)+1); return _v.emplace(_v.size(),ptr).first;
+    }
+    fstack_id rollback() noexcept { std::swap(ptr, pid); return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(const fstack_id& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(fstack_id&& f) noexcept { pid = ptr,ptr = f->second; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(const std::size_t& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+    fstack_id rollback(std::size_t&& f) noexcept { pid = ptr,ptr = _v[f]; return _v.emplace(_v.size(),ptr).first; }
+};
+
+template<typename T> using fstack = fstack_t<T, void>;
+template<typename T> using fstack_vec = fstack_t<T, fstack_mvec>;
+template<typename T> using fstack_vector = fstack_t<T, fstack_mvec>;
+template<typename T> using fstack_map = fstack_t<T, fstack_mmap>;
+template<typename T> using fstack_unordered = fstack_t<T, fstack_mhash>;
+template<typename T> using fstack_hash = fstack_t<T, fstack_mhash>;
+
+int main(){
+    fstack_hash<std::pair<int, std::string>> S; std::pair<int, std::string> p(1, "Hello");
+    auto id = S.push(p);
+    //S.pop();
+    S.emplace(1, "Hello,fstack!"); S.rollback();
+    std::cout << S.top().first << S.top().second << std::endl;
+}
