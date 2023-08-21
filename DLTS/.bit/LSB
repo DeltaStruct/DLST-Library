@@ -1,0 +1,10 @@
+template<typename T>
+concept LSBable = requires(T x){ x & -x; };
+template<LSBable T>
+T LSB(T& x) noexcept {
+    return x & -x;
+}
+template<LSBable T>
+T LSB(T&& x) noexcept {
+    return x & -x;
+}
