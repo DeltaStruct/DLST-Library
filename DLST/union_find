@@ -1,0 +1,35 @@
+#include <vector>
+#include <stack>
+
+class UnionFind {
+    private:
+    using sz_t = long long;
+    std::vector<sz_t> par, sz;
+    public:
+    UnionFind(sz_t n) noexcept : par(n, -1),sz(n, 1) {}
+
+    void resize(sz_t n) noexcept { par.resize(n, -1); }
+    size_t root(sz_t x) noexcept { return (par[x] == -1?x:par[x] = root(par[x])); }
+    size_t nrec_root(sz_t x) noexcept {
+        std::stack<sz_t> st;
+        while (par[x] != -1) st.emplace(x),x = par[x];
+        while (!st.empty()) par[st.top()] = x,st.pop();
+        return x;
+    }
+    bool same(sz_t x, sz_t y) noexcept { return root(x) == root(y); }
+    bool nrec_same(sz_t x, sz_t y) noexcept { return nrec_root(x) == nrec_root(y); }
+    size_t size(sz_t x) noexcept { return sz[root(x)]; }
+    size_t nrec_size(sz_t x) noexcept { return sz[nrec_root(x)]; }
+    void unite(sz_t x, sz_t y) noexcept {
+        x = root(x),y = root(y);
+        if (x == y) return;
+        if (sz[x] < sz[y]) std::swap(x, y);
+        par[y] = x,sz[x] += sz[y];
+    }
+    void nrec_unite(sz_t x, sz_t y) noexcept {
+        x = nrec_root(x),y = nrec_root(y);
+        if (x == y) return;
+        if (sz[x] < sz[y]) std::swap(x, y);
+        par[y] = x,sz[x] += sz[y];
+    }
+};
