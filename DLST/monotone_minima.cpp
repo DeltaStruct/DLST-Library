@@ -46,6 +46,7 @@ long long f(int m, int n) noexcept {
 }
 
 int main(){
+    // verify: https://atcoder.jp/contests/colopl2018-final-open/tasks/colopl2018_final_c
     long long n; std::cin >> n;
     A.assign(n,0);
     std::vector<long long> dp(n,std::numeric_limits<long long>::max()); for (long long& a:A) std::cin >> a;
