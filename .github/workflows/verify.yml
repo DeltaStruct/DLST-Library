@@ -90,6 +90,6 @@ jobs:
         GNUN: ${{ secrets.GHUN }}
         GHMA: ${{ secrets.GHMA }}
       run: |
-        git config --global user.name $GHUN
-        git config --global user.email $GHMA
+        git config --global user.name `$GHUN`
+        git config --global user.email `$GHMA`
         oj-verify all
