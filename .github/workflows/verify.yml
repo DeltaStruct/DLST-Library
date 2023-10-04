@@ -6,10 +6,6 @@ on:
     - main
   pull_request:
 
-env:
-  GNUN: ${{ secrets.GHUN }}
-  GHMA: ${{ secrets.GHMA }}
-
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -91,9 +87,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
         GH_PAT: ${{ secrets.GH_PAT }}
-        GNUN: ${{ secrets.GHUN }}
+        GHUN: ${{ secrets.GHUN }}
         GHMA: ${{ secrets.GHMA }}
       run: |
-        git config --global user.name $GHUN
-        git config --global user.email $GHMA
+        git config --global user.name `echo $GHUN`
+        git config --global user.email `echo $GHMA`
         oj-verify all
