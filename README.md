@@ -13,7 +13,7 @@ DeltaStructの競プロ用C++ライブラリ
 [![Library Size](https://img.shields.io/github/repo-size/DeltaStruct/DLTS-Library?label=Library%20Size)](https://github.com/DeltaStruct/DLTS-Library/blob/main/)
 [![DeltaStruct](https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2FDeltaStruct)](https://atcoder.jp/users/DeltaStruct)  
 
-[![Actions Status](https://github.com/DeltaStruct/DLST-Library/workflows/verify/badge.svg)](https://github.com/DeltaStruct/DLST-Library/actions)  
+[![Actions Status](https://github.com/DeltaStruct/DLST-Library/workflows/verify/badge.svg)](https://github.com/DeltaStruct/DLST-Library/actions)
 [![GitHub Pages](https://img.shields.io/static/v1?label=GitHub+Pages&message=+&color=brightgreen&logo=github)](https://DeltaStruct.github.io/DLST-Library)
 ### ファイル
 #### [ディレクトリ:Library](https://github.com/DeltaStruct/DLTS-Library/blob/main/Library)
