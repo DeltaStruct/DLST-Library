@@ -7,9 +7,10 @@
 int main(){
     int n, q, l, r, t; std::cin >> n >> q;
     BinaryIndexedTree<int> b(n);
+    for (int i(0);i < n;++i) (std::cin >> t),b[i] = t;
     while(q--){
         std::cin >> t >> l >> r;
-        if (t==0) b[l] = r;
+        if (t==0) b[l] += r;
         else std::cout << b.query(l, r) << std::endl;
     }
 }
