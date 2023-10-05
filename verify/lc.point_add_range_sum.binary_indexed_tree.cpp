@@ -6,7 +6,7 @@
 
 int main(){
     int n, q, l, r, t; std::cin >> n >> q;
-    BinaryIndexedTree<int> b(n);
+    BinaryIndexedTree<long long> b(n);
     for (int i(0);i < n;++i) (std::cin >> t),b[i] = t;
     while(q--){
         std::cin >> t >> l >> r;
