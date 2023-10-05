@@ -2,7 +2,6 @@
 #include <concepts>
 #include <iostream>
 #include <string>
-#define private public
 
 template<typename To, typename Tl>
 concept BIT_function = std::invocable<To, bool, Tl, Tl>;
@@ -91,13 +90,3 @@ template<typename T>
 using binary_indexed_tree = BinaryIndexedTree<T>;
 template<typename T>
 using BIT = BinaryIndexedTree<T>;
-
-int main(){
-    int n, q, l, r, t; std::cin >> n >> q;
-    BinaryIndexedTree<int> b(n);
-    while(q--){
-        std::cin >> t >> l >> r;
-        if (t==0) b[l] = r;
-        else std::cout << b.query(l, r) << std::endl;
-    }
-}
