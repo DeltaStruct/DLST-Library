@@ -77,7 +77,7 @@ class BinaryIndexedTree {
         return fn(false,query(e),query(s));
     }
     T kth(std::size_t k) noexcept {
-        for(;k&1==0;k+=){}
+        //for(;k&1==0;k+=){}
     }
     /* デバッグ用 */
     T op(T& x, T& y){ return fn(true, x, y); }
