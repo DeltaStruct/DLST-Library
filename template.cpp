@@ -29,5 +29,7 @@ class neg_infinity {
 constexpr auto infinity::operator-() noexcept { return ninf; }
 constexpr auto neg_infinity::operator-() noexcept { return inf; }
 
+#include "all.hpp"
+
 #include __FILE__ // 自分自身をincludeしmain関数とかを定義
 #endif
